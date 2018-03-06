@@ -1,0 +1,30 @@
+请求方式    POST
+Api网址     http://{$host}/
+请求入口    /index.php
+请求参数
+    call            要调用的Api名称, 示例: User.login.loginByToken
+    args            调用参数, 要求必须为JSON. 示例: {"nickname": "刘德华"}
+    sign            请求签名, 签名规则见附录. 示例: 2188050c58be83b98b2fe737ee250d7f
+    ua              用户标识, 用来识别用户身份. 示例: LOCAL_DEV_CLIENT
+
+请求示例
+    call=User.login.loginByToken&args={"token": "274567kdsdf93"}&sign=2188050c58be83b98b2fe737ee250d7f&ua=LOCAL_DEV_CLIENT
+
+签名生成算法
+    var CALLCLIENT_UA = "LOCAL_DEV_CLIENT";
+    var CALLCLIENT_SIGNKEY = "分配给子系统的签名密钥";
+
+    //生成请求签名
+    var signKey = CALLCLIENT_UA + CALLCLIENT_SIGNKEY + CALLCLIENT_UA;
+    signKey = md5(signKey + call + signKey + args + signKey);
+
+接口响应标准:
+    response        接口返回数据. 默认为 null. 根据业务不同可以为数组 或 其他任意对象
+    status          接口执行状态; 1: 成功;  小于1: 失败;
+    message         接口返回的消息, 默认为: success; 如果接口不成功, 则消息为对应状态的错误描述
+    响应示例:
+        {
+            "status":1,
+            "message":"success",
+            "response":"\u4eb2\u7231\u7684\u3010\u5218\u5fb7\u534e\u3011, \u6b22\u8fce\u4f7f\u7528\u672c\u5730ServiceApi\u5f00\u53d1\u8c03\u8bd5\u5de5\u5177\u3002"
+        }

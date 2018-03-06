@@ -1,0 +1,30 @@
+在 项目根目录的 cliapp 目录下新建仅限于CLI模式运行的程序.
+目录结构和API下的结构一样.
+也是分为三层结构. 分别为FolderName.ClassName.MethodName.
+示例: ConsumeTask.SMSConsumer.start
+
+所有的CliApp推荐全部继承CliApp\BaseCliApp类.
+示例:
+<?php
+namespace CliApp\ConsumeTask;
+use LightApi\BaseCliApp;
+class SMSConsumer extends BaseCliApp
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
+    
+    public function start($params = null)
+    {
+        // do your job here
+        return $this->endResponse('hello world.', 1, 'success');
+    }
+}
+
+使用说明
+  启动一个CliApp
+  php cli.php ConsumeTask.SMSConsumer.start  1
+ 
+  停止一个CliApp
+  php cli.php stop ConsumeTask.SMSConsumer.start
