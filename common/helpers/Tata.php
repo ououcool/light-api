@@ -1,39 +1,34 @@
 <?php
-namespace Common\soa;
+namespace common\helpers;
 
 use LightApi\Config;
 use LightApi\Helpers\LogHelper;
-use Common\Vendors\ComposerLoader;
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise;
 
 /**
- * TimeBacca服务调用类 <br>
+ * Tata服务调用类 <br>
  * 使用方法：<br>
  * 　$args = []; <br>
- * 　$call = 'Example.DBDemo.run'; <br>
- * 　$result = LightApi::usercenter()->call($call, $args); <br>
+ * 　$call = 'Demo.Demo.run'; <br>
+ * 　$result = Tata::usercenter()->call($call, $args); <br>
  * 返回结果为一个数组，其中code为0表示成功，其他值表示失败
  */
-class LightApi
+class Tata
 {
-
     private $apiEntryUrl;
 
     private $clientUA;
 
     private $clientSignkey;
 
-    private $connectTimeout=3;
+    private $connectTimeout = 3;
 
-    private $executeTimeout=30;
+    private $executeTimeout = 30;
 
     private static $requestHeaders = null;
 
-    private function __construct()
-    {}
+    private function __construct() {}
 
-    private function config($apiEntryUrl, $clientUA, $clientSignkey, $connTimeout, $execTimeout){
+    private function config($apiEntryUrl, $clientUA, $clientSignkey, $connTimeout, $execTimeout) {
         $this->apiEntryUrl = $apiEntryUrl;
         $this->clientUA = $clientUA;
         $this->clientSignkey = $clientSignkey;
@@ -44,10 +39,8 @@ class LightApi
     /**
      * 请求服务端Api
      *
-     * @param string $call
-     *            要请求的Api名称, 三段式, ex: Test.Info.getWelcomeMessage
-     * @param array $args
-     *            请求参数, 一维数组.
+     * @param string $call 要请求的Api名称, 三段式, ex: Test.Info.getWelcomeMessage
+     * @param array $args 请求参数, 一维数组.
      * @return array or string 请求成功返回数组, 失败返回错误信息字符串
      */
     private function request($call, $args, $httpHeaders = array())
@@ -86,9 +79,9 @@ class LightApi
 
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($httpCode != 200 || curl_errno($ch) !== 0 ) {
-            $logMessage = "请求TimeBacca服务失败！\r\nURL: {$requstUrl}\r\nPOST: {$postArgs}\r\nRET:{$response}";
+            $logMessage = "请求服务失败！\r\nURL: {$requstUrl}\r\nPOST: {$postArgs}\r\nRET:{$response}";
             $logMessage .= "\r\nHTTP STATUS: {$httpCode}; \r\nCURL_ERRNO: " . curl_errno($ch) . "; CURL_ERROR: " . curl_error($ch);
-            LogHelper::error($logMessage, 'clz_timebacca_error');
+            LogHelper::error($logMessage, 'tata.error');
 
             curl_close($ch); // 关闭curl, 释放资源
             $result = array(
@@ -102,9 +95,9 @@ class LightApi
 
         $result = json_decode($response, true);
         if($result==null){
-            $logMessage = "请求TimeBacca服务的返回结果处理失败！";
+            $logMessage = "请求服务的返回结果处理失败！";
             $logMessage .= "\r\nURL: {$requstUrl}\r\nPOST: {$postArgs}\r\nRET: ". var_export($response, true);
-            LogHelper::error($logMessage, 'clz_timebacca_error');
+            LogHelper::error($logMessage, 'tata.error');
 
             $result = array(
                 'response' => null,
@@ -144,7 +137,7 @@ class LightApi
         $args = json_encode($args);
         $sign = "{$clientUA}{$clientSignKey}{$clientUA}";
         $sign = md5("{$sign}{$call}{$sign}{$args}{$sign}");
-//        $postArgs = "args={$args}&sign={$sign}&ua={$clientUA}";
+        // $postArgs = "args={$args}&sign={$sign}&ua={$clientUA}";
         $postArgs = ['args' => $args, 'sign' => $sign, 'ua' => $clientUA];
 
         $post['form_params']= $postArgs;
@@ -204,51 +197,20 @@ class LightApi
 
         $condition = empty($apiEntryUrl) || empty($clientUA) || empty($clientSignkey);
         if($condition){
-            throw new \Exception('用于TimeBacca的配置不正确，存在不允许的无效配置项！请检查。');
+            throw new \Exception('配置不正确，存在不允许的无效配置项！请检查。');
         }
 
-        $instance = new LightApi();
+        $instance = new self();
         $instance->config($apiEntryUrl, $clientUA, $clientSignkey, $connTimeout, $execTimeout);
 
         return $instance;
     }
 
-
     /**
-     * 获取用于UserCenter的调用实例
-     * @throws \Exception
-     * @return LightApi
+     * 调用第三方服务中心
+     * @param  string $moduleKey 服务中心
+     * @return Tata
      */
-    public static function usercenter(){
-        return self::loadInstanceBySysKey(__FUNCTION__);
-    }
-
-    /**
-     * 获取用于MessageCenter的调用实例
-     * @throws \Exception
-     * @return LightApi
-     */
-    public static function messagecenter(){
-        return self::loadInstanceBySysKey(__FUNCTION__);
-    }
-
-    /**
-     * 获取用于ProductPartner的调用实例
-     * @throws \Exception
-     * @return LightApi
-     */
-    public static function productpartner(){
-        return self::loadInstanceBySysKey(__FUNCTION__);
-    }
-    /**
-     * 获取用于xjkorder的调用实例
-     * @throws \Exception
-     * @return LightApi
-     */
-    public static function xjkordercenter(){
-        return self::loadInstanceBySysKey(__FUNCTION__);
-    }
-
     private static function loadInstanceBySysKey($moduleKey){
         if(!empty(self::$instances[$moduleKey])){
             return self::$instances[$moduleKey];
@@ -265,5 +227,31 @@ class LightApi
         self::$instances[$moduleKey] = self::instance($svcConfig);
         return self::$instances[$moduleKey];
     }
+
+    /**
+     * 获取用于UserCenter的调用实例
+     * @throws \Exception
+     * @return Tata
+     */
+    public static function usercenter(){
+        return self::loadInstanceBySysKey(__FUNCTION__);
+    }
+
+    /**
+     * 获取用于MessageCenter的调用实例
+     * @throws \Exception
+     * @return Tata
+     */
+    public static function messagecenter(){
+        return self::loadInstanceBySysKey(__FUNCTION__);
+    }
+
+    /**
+     * 获取用于OrderCenter的调用实例
+     * @throws \Exception
+     * @return Tata
+     */
+    public static function ordercenter(){
+        return self::loadInstanceBySysKey(__FUNCTION__);
+    }
 }
-// @error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);

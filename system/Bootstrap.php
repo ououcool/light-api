@@ -17,21 +17,9 @@ defined('API_DIR_NAME')         or define('API_DIR_NAME', 'api');
 defined('CLIAPP_DIR_NAME')      or define('CLIAPP_DIR_NAME', 'cliapp');
 
 /**
- * Model所在文件夹名称
- * 备注: 所有Model类的根命名空间必须和此相同
+ * 环境配置文件所在文件夹名称
  */
-defined('MODEL_DIR_NAME')       or define('MODEL_DIR_NAME', 'models');
-
-/**
- * Service所在文件夹名称
- * 备注: 所有Service类的根命名空间必须和此相同
- */
-defined('SERVICE_DIR_NAME')     or define('SERVICE_DIR_NAME', 'services');
-
-/**
- * 应用配置文件所在文件夹名称
- */
-defined('CONFIG_DIR_NAME')      or define('CONFIG_DIR_NAME', 'environment');
+defined('CONFIG_DIR_NAME')      or define('CONFIG_DIR_NAME', 'environments');
 
 /**
  * 公共类库所在文件夹名称
@@ -47,42 +35,31 @@ defined('ROOT_PATH')            or define('ROOT_PATH', dirname(__DIR__) . DIRECT
 /**
  * 系统框架目录
  */
-defined('FX_PATH')              or define('FX_PATH', ROOT_PATH. FX_DIR_NAME. DIRECTORY_SEPARATOR);
+defined('FX_PATH')              or define('FX_PATH', ROOT_PATH . FX_DIR_NAME. DIRECTORY_SEPARATOR);
 
 /**
  * API类文件存放目录
  */
-defined('API_PATH')             or define('API_PATH', ROOT_PATH. API_DIR_NAME. DIRECTORY_SEPARATOR);
+defined('API_PATH')             or define('API_PATH', ROOT_PATH . API_DIR_NAME. DIRECTORY_SEPARATOR);
 
 /**
  * CliApp类文件存放目录
  */
-defined('CLIAPP_PATH')          or define('CLIAPP_PATH', ROOT_PATH. CLIAPP_DIR_NAME. DIRECTORY_SEPARATOR);
-
-/**
- * Model类文件存放目录
- */
-defined('MODEL_PATH')           or define('MODEL_PATH', ROOT_PATH. MODEL_DIR_NAME. DIRECTORY_SEPARATOR);
-
-/**
- * Service类文件存放目录
- */
-defined('SERVICE_PATH')         or define('SERVICE_PATH', ROOT_PATH. SERVICE_DIR_NAME. DIRECTORY_SEPARATOR);
-
+defined('CLIAPP_PATH')          or define('CLIAPP_PATH', ROOT_PATH . CLIAPP_DIR_NAME. DIRECTORY_SEPARATOR);
 
 /**
  * 应用配置文件存放目录
  * 要求包含:
  *      config.php          系统配置文件
  */
-defined('CONFIG_PATH')          or define('CONFIG_PATH', ROOT_PATH.CONFIG_DIR_NAME . DIRECTORY_SEPARATOR);
+defined('CONFIG_PATH')          or define('CONFIG_PATH', ROOT_PATH . CONFIG_DIR_NAME . DIRECTORY_SEPARATOR);
 
 /**
  * 应用公共类库和函数库目录
  * 要求包含:
  *      functions.php       函数库文件
  */
-defined('COMMON_PATH')          or define('COMMON_PATH', FX_PATH.COMMON_DIR_NAME . DIRECTORY_SEPARATOR);
+defined('COMMON_PATH')          or define('COMMON_PATH', ROOT_PATH . COMMON_DIR_NAME . DIRECTORY_SEPARATOR);
 
 /**
  * 运行时文件存放目录
@@ -103,7 +80,7 @@ defined('FX_CONFIG_PATH')       or define('FX_CONFIG_PATH', FX_PATH . 'config' .
  * 包含:
  *      functions.php       系统函数库文件
 */
-defined('FX_COMMON_PATH')       or define('FX_COMMON_PATH', FX_PATH.'common'.DIRECTORY_SEPARATOR);
+defined('FX_COMMON_PATH')       or define('FX_COMMON_PATH', FX_PATH . 'common' . DIRECTORY_SEPARATOR);
 
 /**
  * 定义配置文件(COMMON_PATH/config.php)内返回的配置数组在$GLOBALS全局变量内的存储key名

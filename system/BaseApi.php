@@ -48,6 +48,7 @@ class BaseApi{
         $requestClass = API_DIR_NAME . "\\{$call[0]}\\{$call[1]}"; // 请求类名
 
         ClassLoader::import( $requestClass );
+// var_dump($requestClass); var_dump($requestMethod);var_dump(class_exists( $requestClass, false ));   die();
         if( class_exists( $requestClass, false ) == false || method_exists( $requestClass, $requestMethod ) == false ) {
             $response = array( 
                     'response' => null,

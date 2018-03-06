@@ -1,6 +1,5 @@
 <?php
-
-namespace Common;
+namespace helpers;
 
 class Util
 {

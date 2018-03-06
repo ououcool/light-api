@@ -6,30 +6,30 @@ use LightApi\Helpers\LogHelper;
  * 项目配置文件
  */
 //@formatter:off
-return array(
+return [
     // 客户端请求IP限制
     // 此限制为全局限制, 优先级高于针对不同Client的配置. 
     // 如果数组留空(不限制IP), 则所有IP均可连接.
     // 如果数组不为空, 则仅允许列表内配置的IP连接.
-    'ClientIPBind'     	=>array(),
+    'ClientIPBind'     	=> [],
     
     // 客户端禁入IP限制(黑名单)
     // 此限制为全局限制, 优先级高于针对不同Client的配置. 
     // 当ClientIPBind为空时, 需对某些IP进行限制, 则可以将这些IP配置到该项中来达到禁止访问的目的．
-    'ClientIPBlackList'	=>array(),
+    'ClientIPBlackList'	=> [],
     
 	// Redis相关配置
-    'RedisHelper'		=>array(
+    'RedisHelper'		=> [
         'hostname' 	=> '192.168.39.214',
         'port' 		=> 6379,
         'database' 	=> 11,
         'connectTimeout'	=> 3,
-    ),
+    ],
 
     // 日志相关配置
     // 非Unix系统只支持file模式
     // 建议Unix系统优先使用syslog模式
-    'LogHelper'		    =>array(
+    'LogHelper'		    => [
         // 日志级别控制
         // 支持两种模式配置:
         // 1: 级别控制模式，记录所有低于指定级别的日志
@@ -48,5 +48,17 @@ return array(
         'logType' 	=> 'file',                  // 日志类型; 可选值: file / syslog
         'splitFileByLevel' 	=> false,          // 日志是否按照级别单独文件存放; 仅限 file 类型日志
         'logFileSavePath'   => RUNTIME_PATH.'logs'.DIRECTORY_SEPARATOR,  //日志文件存储目录, 必须对PHP可写, 且以/结尾; 仅限 file 类型日志
-    ),
-);
+    ],
+
+    // Tata服务调用类
+    'Tata'=> [
+        'class' => 'common\helpers\Tata',
+        'usercenter'=>[ //用户中心  开发环境&本地环境
+            'ClientUA' => 'LOCAL_DEV_CLIENT',
+            'ClientSignKey' => 'LOCAL_DEV_REQUEST_SIGN_KEY',
+            'APIEntryUrl' => "http://localhost/index.php",
+            'ExecuteTimeout' => 10,
+            'ConnectTimeout' => 3,
+        ],
+    ],
+];

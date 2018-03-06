@@ -15,6 +15,7 @@ class Application{
     private static function init(){
         // 注册异常时的捕获和处理器
         set_exception_handler(__CLASS__ . '::exceptionCallback');
+
         // 注册退出时的捕获和处理器
         register_shutdown_function(__CLASS__ . '::shutdownCallback');
         
@@ -26,22 +27,20 @@ class Application{
         ClassLoader::addNamespace(__NAMESPACE__, FX_PATH);
         ClassLoader::addNamespace(API_DIR_NAME, API_PATH);
         ClassLoader::addNamespace(CLIAPP_DIR_NAME, CLIAPP_PATH);
-        ClassLoader::addNamespace(MODEL_DIR_NAME, MODEL_PATH);
-        ClassLoader::addNamespace(SERVICE_DIR_NAME, SERVICE_PATH);
         ClassLoader::addNamespace(COMMON_DIR_NAME, COMMON_PATH);
         spl_autoload_register(__NAMESPACE__ . '\ClassLoader::import', $throw = true);
         
         // 加载框架自带函数库
         require FX_COMMON_PATH . 'functions.php';
-// die(FX_COMMON_PATH);
+
         // 加载框架惯例配置
         $GLOBALS[FX_KEY_CONFIG] = require FX_CONFIG_PATH . 'config.php';
         
         // 加载用户函数库
-        // require COMMON_PATH . 'functions.php';
+        require COMMON_PATH . 'functions.php';
         
         // 加载并合并用户配置到全局变量中
-        $GLOBALS[FX_KEY_CONFIG] = array_merge($GLOBALS[FX_KEY_CONFIG], require CONFIG_PATH . 'config.php');
+        $GLOBALS[FX_KEY_CONFIG] = array_merge($GLOBALS[FX_KEY_CONFIG], require CONFIG_PATH . 'index.php');
     }
 
     /**
@@ -143,7 +142,7 @@ class Application{
          * 本次请求的Api名称为常量
          */
         define('REQUEST_API', $call);
-        
+     
         // 调用请求的API处理对象
         $response = BaseApi::invokeRequestApi($call, $args);
         return $response;

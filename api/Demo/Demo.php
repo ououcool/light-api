@@ -1,6 +1,7 @@
 <?php
-namespace Api\Demo;
+namespace api\Demo;
 
+use common\helpers\Tata;
 use LightApi\BaseApi;
 
 class Demo extends BaseApi
@@ -11,7 +12,17 @@ class Demo extends BaseApi
      */
     public function test($params = null)
     { 
-        $data = ['result' => "DONE"];
+        $data = ['result' => "WELCOME!"];
+        return $this->endResponse($data);
+    }
+
+    /**
+     * tata示例
+     * @return array
+     */
+    public function tata($params = null)
+    {
+        $data = Tata::usercenter()->call('Demo.Demo.test', []);
         return $this->endResponse($data);
     }
 }

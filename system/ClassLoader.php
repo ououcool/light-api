@@ -45,7 +45,7 @@ class ClassLoader
         $clzFilePath = self::getClassFilePath($className);
         if (empty($clzFilePath)) {
             return false;
-            // throw new \Exception("类文件[{$className}]不存在。。。");
+            // throw new \Exception("类文件[{$className}]不存在！");
         }
         // 引入类文件
         require_once $clzFilePath;
@@ -60,7 +60,7 @@ class ClassLoader
      */
     public static function isClassExist($className)
     {
-        return ! empty(self::getClassFilePath($className));
+        return !empty(self::getClassFilePath($className));
     }
 
     /**
@@ -75,16 +75,16 @@ class ClassLoader
         if (sizeof($className) < 2) {
             return null;
         }
-        
-        $nsName = array_shift($className);
+
+        $nsName = array_shift($className);        
         if (array_key_exists($nsName, self::$namespace) == false) {
             return null;
         }
         
         $nsRootPath = self::$namespace[$nsName];
-        $clzFilePath = $nsRootPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $className) . '.php';
-        
-        if (! file_exists($clzFilePath)) {
+        $clzFilePath = $nsRootPath . implode(DIRECTORY_SEPARATOR, $className) . '.php';
+      
+        if (!file_exists($clzFilePath)) {
             return null;
         }
         return $clzFilePath;
